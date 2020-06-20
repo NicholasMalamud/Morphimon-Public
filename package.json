@@ -10,7 +10,7 @@
 
   "scripts": {
 
-    "start": "node -js Morphimon/index.js"
+    "start": "node Morphimon/index.js"
 
 
   },
