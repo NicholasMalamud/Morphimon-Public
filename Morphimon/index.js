@@ -17,7 +17,7 @@ client.once('ready', () => {
 client.login('NzIzMzMxODE0OTMxOTU1ODAy.XuwXTw.JvuDAqj6ft5uNcxw8B0tYXXE9Fo');
 
 client.on('message', message => {
-    console.log(message.content);
+    //console.log(message.content);
     var userId = message.author.id;
     if (message.content === '!play') {
         // send back "Pong." to the channel the message was sent in
