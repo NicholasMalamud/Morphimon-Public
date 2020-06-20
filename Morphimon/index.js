@@ -1,5 +1,5 @@
 var fs = require('fs');
-var dataread = fs.readFileSync('data.json');
+var dataread = fs.readFileSync('Morphimon/data.json');
 var data = JSON.parse(dataread);
 // require the discord.js module
 const Discord = require('discord.js');
