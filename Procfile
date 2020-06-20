@@ -1,1 +1,1 @@
-worker: node -js Morphimon/index.js
+worker: node Morphimon/index.js
