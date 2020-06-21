@@ -1,6 +1,6 @@
 var fs = require('fs');
 let request = require(`request`);
-var dataread = fs.readFileSync('Morphimon/data.json');
+var dataread = fs.readFileSync('data.json');
 var data = JSON.parse(dataread);
 var start =  false;
 const dataChannelID = '724167400257224764';
@@ -32,20 +32,25 @@ client.on('message', message => {
             
         })
         .catch(console.error);
+  
+        
     }
 
     function saveData()
     {
         client.channels.get(dataChannelID).fetchMessages({ limit: 1 }).then(messages3 => {
             let lastMessage = messages3.first();
-        
-            lastMessage.edit({
-                files: ['Morphimon/data.json']
-            });
+            lastMessage.delete();
+           // lastMessage.edit({
+               // files: ['data.json']
+         //   });
             
         })
         .catch(console.error);
-    
+        
+        client.channels.get(dataChannelID).send({
+            files: ['data.json']
+        });
     }
 
     if(start == false)
