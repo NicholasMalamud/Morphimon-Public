@@ -1,6 +1,6 @@
 var fs = require('fs');
 let request = require(`request`);
-var dataread = fs.readFileSync('data.json');
+var dataread = fs.readFileSync('Morphimon/data.json');
 var data = JSON.parse(dataread);
 var start =  false;
 const dataChannelID = '724167400257224764';
@@ -49,7 +49,7 @@ client.on('message', message => {
         .catch(console.error);
         
         client.channels.get(dataChannelID).send({
-            files: ['data.json']
+            files: ['Morphimon/data.json']
         });
     }
 
