@@ -1,6 +1,10 @@
 var fs = require('fs');
-var dataread = fs.readFileSync('Morphimon/data.json');
+let request = require(`request`);
+var dataread = fs.readFileSync('data.json');
 var data = JSON.parse(dataread);
+var start =  false;
+const dataChannelID = '724167400257224764';
+
 // require the discord.js module
 const Discord = require('discord.js');
 
@@ -16,12 +20,58 @@ client.once('ready', () => {
 // login to Discord with your app's token
 client.login('NzIzMzMxODE0OTMxOTU1ODAy.XuwXTw.JvuDAqj6ft5uNcxw8B0tYXXE9Fo');
 
+
+
 client.on('message', message => {
+
+    function readData()
+    {
+        client.channels.get(dataChannelID).fetchMessages({ limit: 1 }).then(messages0 => {
+            let lastMessage = messages0.first();
+            download(lastMessage.attachments.first().url);
+            
+        })
+        .catch(console.error);
+    }
+
+    function saveData()
+    {
+        client.channels.get(dataChannelID).fetchMessages({ limit: 1 }).then(messages3 => {
+            let lastMessage = messages3.first();
+        
+            lastMessage.edit({
+                files: ['data.json']
+            });
+            
+        })
+        .catch(console.error);
+    
+    }
+
+    if(start == false)
+    {
+        console.log("start!");
+        readData();
+        start = true;
+    }
+
+
+
     //console.log(message.content);
     var userId = message.author.id;
+    if (message.content === '!save') {
+   
+      saveData();
+    }
+
+    if (message.content === '!read') {
+   
+       readData();
+    }
+
     if (message.content === '!play') {
         // send back "Pong." to the channel the message was sent in
-       
+     
         if (!data[userId]) { //this checks if data for the user has already been created
             message.author.send('Welcome to Mophimon, a virtual pet simulator on discord!');
             message.author.send('Would you like to adopt a Morphimon?(yes/no)').then(() => {
@@ -39,6 +89,7 @@ client.on('message', message => {
                                     if (!data[userId]) { //this checks if data for the user has already been created
                                         data[userId] = {MorphimonName: messages2.first().content, StartDate: Date(), LastInteractionTime: Date(), FoodLevel: 50, lastFeedingTime: 'Never', LastFoodCheckTime: Date()}; //if not, create it
                                         fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+                                        saveData();
                                     }
                                 })
                                 .catch(() => {
@@ -66,6 +117,7 @@ client.on('message', message => {
             
             data[userId].LastInteractionTime = Date();
             fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+            saveData();
         }
     }
 
@@ -76,10 +128,19 @@ client.on('message', message => {
             {
                 message.author.send('Feeding ' + data[userId].MorphimonName + ' 1 berry ...');
                 CurrentFoodLevel(data[userId].LastFoodCheckTime, userId);
-                data[userId].FoodLevel = data[userId].FoodLevel + 10;
+                if( data[userId].FoodLevel < 90)
+                {
+                  data[userId].FoodLevel = data[userId].FoodLevel + 10;  
+                }
+                else
+                {
+                    data[userId].FoodLevel = 100;    
+                }
+                
                 data[userId].lastFeedingTime = Date();
                 data[userId].LastInteractionTime = Date();
                 fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+                !saveData();
                
                 message.author.send( data[userId].MorphimonName + "'s Food Level is at " + data[userId].FoodLevel + '%!');
 
@@ -149,3 +210,12 @@ Date.prototype.getWeek = function() {
     var dayOfYear = ((today - onejan + 86400000)/86400000);
     return Math.ceil(dayOfYear/7)
   };
+
+ 
+
+function download(url){
+    request.get(url)
+        .on('error', console.error)
+        .pipe(fs.createWriteStream('data.json'));
+}
+
