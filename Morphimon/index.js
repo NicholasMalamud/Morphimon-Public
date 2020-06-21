@@ -1,6 +1,6 @@
 var fs = require('fs');
 let request = require(`request`);
-var dataread = fs.readFileSync('morphimon/data.json');
+var dataread = fs.readFileSync('Morphimon/data.json');
 var data = JSON.parse(dataread);
 var start =  false;
 const dataChannelID = '724167400257224764';
@@ -40,7 +40,7 @@ client.on('message', message => {
             let lastMessage = messages3.first();
         
             lastMessage.edit({
-                files: ['morphimon/data.json']
+                files: ['Morphimon/data.json']
             });
             
         })
