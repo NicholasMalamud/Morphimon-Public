@@ -221,6 +221,6 @@ Date.prototype.getWeek = function() {
 function download(url){
     request.get(url)
         .on('error', console.error)
-        .pipe(fs.createWriteStream('data.json'));
+        .pipe(fs.createWriteStream('Morphimon/data.json'));
 }
 
