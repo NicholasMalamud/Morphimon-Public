@@ -186,7 +186,7 @@ client.on('message', message => {
     if (message.content === '!feed') {
         if (data[userId])
         {
-           if( (MinuteDifference(data[userId].LastFoodCheckTime) >= 60) || (data[userId].lastFeedingTime === "Never" ) )
+           if( (MinuteDifference(data[userId].lastFeedingTime) >= 60) || (data[userId].lastFeedingTime === "Never" ) )
            {
                 if( data[userId].FoodLevel < 100)
                 {
