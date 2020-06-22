@@ -1,7 +1,9 @@
 var fs = require('fs');
 let request = require(`request`);
-var dataread = fs.readFileSync('Morphimon/data.json');
-var data = JSON.parse(dataread);
+ 
+var dataread;
+var data;
+
 var start =  false;
 const dataChannelID = '724167400257224764';
 
@@ -18,23 +20,48 @@ client.once('ready', () => {
 });
 
 // login to Discord with your app's token
-client.login('NzIzMzMxODE0OTMxOTU1ODAy.XuwXTw.JvuDAqj6ft5uNcxw8B0tYXXE9Fo');
+client.login('NzIzMzMxODE0OTMxOTU1ODAy.XuwXTw.JvuDAqj6ft5uNcxw8B0tYXXE9Fo').then(login => {
+function download(url){
+    request.get(url)
+        .on('error', console.error)
+        .pipe(fs.createWriteStream('data.json'))
+      
+}
+
+
+
+function readData()
+{
+    client.channels.get(dataChannelID).fetchMessages({ limit: 1 }).then(messages0 => {
+        let lastMessage = messages0.first();
+        download(lastMessage.attachments.first().url);
+        
+    })
+    .catch(console.error);
+
+    try {
+     
+        dataread = fs.readFileSync('data.json');
+       console.log(dataread);
+       data = JSON.parse(dataread);
+       fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+    } catch (error) {
+        console.log(error);
+    }
+
+    
+}
+readData();
+})
+.catch(console.error)
+;
+
 
 
 
 client.on('message', message => {
 
-    function readData()
-    {
-        client.channels.get(dataChannelID).fetchMessages({ limit: 1 }).then(messages0 => {
-            let lastMessage = messages0.first();
-            download(lastMessage.attachments.first().url);
-            
-        })
-        .catch(console.error);
-  
-        
-    }
+    
 
     function saveData()
     {
@@ -49,19 +76,31 @@ client.on('message', message => {
         .catch(console.error);
         
         client.channels.get(dataChannelID).send({
-            files: ['Morphimon/data.json']
+            files: ['data.json']
         });
     }
 
     if(start == false)
     {
-        console.log("start!");
-        readData();
+        console.log("start!"); 
         start = true;
+        try {
+     
+            dataread = fs.readFileSync('data.json');
+           console.log(dataread);
+           data = JSON.parse(dataread);
+           fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+        } catch (error) {
+            console.log(error);
+        }
+
+       
+       
     }
 
-
-
+    
+    
+   
     //console.log(message.content);
     var userId = message.author.id;
     if (message.content === '!save') {
@@ -76,7 +115,8 @@ client.on('message', message => {
 
     if (message.content === '!play') {
         // send back "Pong." to the channel the message was sent in
-     
+       
+    
         if (!data[userId]) { //this checks if data for the user has already been created
             message.author.send('Welcome to Mophimon, a virtual pet simulator on discord!');
             message.author.send('Would you like to adopt a Morphimon?(yes/no)').then(() => {
@@ -216,11 +256,9 @@ Date.prototype.getWeek = function() {
     return Math.ceil(dayOfYear/7)
   };
 
- 
+ function JSONparsing()
+ {
+     
+ }
 
-function download(url){
-    request.get(url)
-        .on('error', console.error)
-        .pipe(fs.createWriteStream('Morphimon/data.json'));
-}
 
