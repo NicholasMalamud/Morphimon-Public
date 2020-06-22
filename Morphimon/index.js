@@ -173,8 +173,8 @@ client.on('message', message => {
             message.author.send('The last time you interacted with ' + data[userId].MorphimonName + ' was on ' + data[userId].LastInteractionTime );
             message.author.send('It has been ' + SecondDifference(data[userId].LastInteractionTime) + ' seconds since you last interacted with your Morphimon'); 
             CurrentFoodLevel(data[userId].LastFoodCheckTime, userId);
-            message.author.send( data[userId].MorphimonName + "'s Food Level is at " + data[userId].FoodLevel + '%!');
-            message.author.send('The last time you fed ' + data[userId].MorphimonName + ' was on ' + data[userId].lastFeedingTime );
+            message.author.send( data[userId].MorphimonName + "'s Food Level is at " + Math.round(data[userId].FoodLevel) + '%!');
+            message.author.send('The last time you fed ' + data[userId].MorphimonName + ' was on ' + data[userId].lastFeedingTime);
             message.author.send('It has been ' + SecondDifference(data[userId].lastFeedingTime) + ' seconds since you last fed your Morphimon'); 
             
             data[userId].LastInteractionTime = Date();
@@ -186,38 +186,45 @@ client.on('message', message => {
     if (message.content === '!feed') {
         if (data[userId])
         {
-            if( data[userId].FoodLevel < 100)
-            {
-                message.author.send('Feeding ' + data[userId].MorphimonName + ' 1 berry ...');
-                CurrentFoodLevel(data[userId].LastFoodCheckTime, userId);
-                if( data[userId].FoodLevel < 90)
+           if( (MinuteDifference(data[userId].LastFoodCheckTime) >= 60) || (data[userId].lastFeedingTime === "Never" ) )
+           {
+                if( data[userId].FoodLevel < 100)
                 {
-                  data[userId].FoodLevel = data[userId].FoodLevel + 10;  
+                    message.author.send('Feeding ' + data[userId].MorphimonName + ' 1 berry ...');
+                    CurrentFoodLevel(data[userId].LastFoodCheckTime, userId);
+                    if( data[userId].FoodLevel < 70)
+                    {
+                    data[userId].FoodLevel = data[userId].FoodLevel + 30;  
+                    }
+                    else
+                    {
+                        data[userId].FoodLevel = 100;    
+                    }
+                    
+                    data[userId].lastFeedingTime = Date();
+                    data[userId].LastInteractionTime = Date();
+                    fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
+                    !saveData();
+                 
+                    message.author.send( data[userId].MorphimonName + "'s Food Level is at " + Math.round(data[userId].FoodLevel) + '%!');
+
                 }
                 else
                 {
-                    data[userId].FoodLevel = 100;    
+                    message.author.send(data[userId].MorphimonName + ' is already full!')
                 }
-                
-                data[userId].lastFeedingTime = Date();
-                data[userId].LastInteractionTime = Date();
-                fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
-                !saveData();
-               
-                message.author.send( data[userId].MorphimonName + "'s Food Level is at " + data[userId].FoodLevel + '%!');
-
             }
             else
             {
-                message.author.send(data[userId].MorphimonName + ' is already full!')
+                message.author.send("You need to wait " + (60 - MinuteDifference(data[userId].lastFeedingTime)) + " minutes before you can feed your Morphimon again!")
             }
-           
         }
         else
         {
             message.author.send('Sorry you need a Morphimon first before you can feed it, type !play to get started')
         }
     }
+    
 });
 
 function SecondDifference(olddate)
@@ -254,15 +261,15 @@ function CurrentFoodLevel(Olddate, userId)
 {
   var MinDif = MinuteDifference(Olddate);
   
-  if (MinDif >=  data[userId].FoodLevel)
+  if (MinDif >=  1440)
   {
-    data[userId].FoodLevel = 0;
+    data[userId].FoodLevel = 0; 
   }
   else
   {
-    data[userId].FoodLevel = data[userId].FoodLevel - MinDif;
+    data[userId].FoodLevel = data[userId].FoodLevel - (MinDif/14.4);
   }
-  data[userId].LastFoodCheckTime = Date();
+   data[userId].LastFoodCheckTime = Date();
   fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
   
 }
