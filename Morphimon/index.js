@@ -24,7 +24,7 @@ client.login('NzIzMzMxODE0OTMxOTU1ODAy.XuwXTw.JvuDAqj6ft5uNcxw8B0tYXXE9Fo').then
 function download(url){
     request.get(url)
         .on('error', console.error)
-        .pipe(fs.createWriteStream('data.json'))
+        .pipe(fs.createWriteStream('Morphimon/data.json'))
       
 }
 
@@ -41,10 +41,10 @@ function readData()
 
     try {
      
-        dataread = fs.readFileSync('data.json');
+        dataread = fs.readFileSync('Morphimon/data.json');
        console.log(dataread);
        data = JSON.parse(dataread);
-       fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+       fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
     } catch (error) {
         console.log(error);
     }
@@ -76,7 +76,7 @@ client.on('message', message => {
         .catch(console.error);
         
         client.channels.get(dataChannelID).send({
-            files: ['data.json']
+            files: ['Morphimon/data.json']
         });
     }
 
@@ -86,10 +86,10 @@ client.on('message', message => {
         start = true;
         try {
      
-            dataread = fs.readFileSync('data.json');
+            dataread = fs.readFileSync('Morphimon/data.json');
            console.log(dataread);
            data = JSON.parse(dataread);
-           fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+           fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
         } catch (error) {
             console.log(error);
         }
@@ -133,7 +133,7 @@ client.on('message', message => {
                                    
                                     if (!data[userId]) { //this checks if data for the user has already been created
                                         data[userId] = {MorphimonName: messages2.first().content, StartDate: Date(), LastInteractionTime: Date(), FoodLevel: 50, lastFeedingTime: 'Never', LastFoodCheckTime: Date()}; //if not, create it
-                                        fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+                                        fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
                                         saveData();
                                     }
                                 })
@@ -161,7 +161,7 @@ client.on('message', message => {
             message.author.send('It has been ' + SecondDifference(data[userId].lastFeedingTime) + ' seconds since you last fed your Morphimon'); 
             
             data[userId].LastInteractionTime = Date();
-            fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+            fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
             saveData();
         }
     }
@@ -184,7 +184,7 @@ client.on('message', message => {
                 
                 data[userId].lastFeedingTime = Date();
                 data[userId].LastInteractionTime = Date();
-                fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+                fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
                 !saveData();
                
                 message.author.send( data[userId].MorphimonName + "'s Food Level is at " + data[userId].FoodLevel + '%!');
@@ -246,7 +246,7 @@ function CurrentFoodLevel(Olddate, userId)
     data[userId].FoodLevel = data[userId].FoodLevel - MinDif;
   }
   data[userId].LastFoodCheckTime = Date();
-  fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+  fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
   
 }
 Date.prototype.getWeek = function() {
