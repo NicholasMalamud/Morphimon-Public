@@ -69,7 +69,7 @@ client.on('message', message => {
             let lastMessage = messages3.first();
             lastMessage.delete();
            // lastMessage.edit({
-               // files: ['data.json']
+               // files: ['Morphimon/data.json']
          //   });
             
         })
@@ -125,21 +125,38 @@ client.on('message', message => {
                 .then(messages => {
                     if (messages.first().content === 'yes') {
                         message.author.send('What would you like to name your Morphimon?').then(() => {
-                            const filter = m => message.author.id === m.author.id;
-                        
+                           
+                            SaveName();
+                            function SaveName()
+                            {
+                                const filter = m => message.author.id === m.author.id;
                             message.author.dmChannel.awaitMessages(filter, { time: 60000, max: 1, errors: ['time'] })
                                 .then(messages2 => {
-                                    message.author.send('Congratulations on adopting ' + messages2.first().content + "!");
-                                   
-                                    if (!data[userId]) { //this checks if data for the user has already been created
-                                        data[userId] = {MorphimonName: messages2.first().content, StartDate: Date(), LastInteractionTime: Date(), FoodLevel: 50, lastFeedingTime: 'Never', LastFoodCheckTime: Date()}; //if not, create it
-                                        fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
-                                        saveData();
+                                    if(messages2.last().content.length <= 50)
+                                    {
+                                            message.author.send('Congratulations on adopting ' + messages2.first().content + "!");
+                                    
+                                        if (!data[userId]) { //this checks if data for the user has already been created
+                                            data[userId] = {MorphimonName: messages2.first().content, StartDate: Date(), LastInteractionTime: Date(), FoodLevel: 50, lastFeedingTime: 'Never', LastFoodCheckTime: Date()}; //if not, create it
+                                            fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
+                                            saveData();
+                                        } 
                                     }
+                                    else
+                                    {
+                                        message.author.send('Name can only be 50 Characters long, pls resubmit a shorter name below:').then(toolong=> {
+                                            SaveName();
+                                        })
+                                        .catch(console.error);
+                    
+                                    }
+                                   
                                 })
-                                .catch(() => {
+                                .catch((error) => {
+                                    console.log(error);
                                     message.author.send('You did not enter any input!');
                                 });
+                            }
                         }); 
                     }
                 })
