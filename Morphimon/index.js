@@ -174,7 +174,7 @@ client.on('message', message => {
                 .setTitle('Pet Info') 
                 .addField('Name: ', data[userId].MorphimonName )
                 .attachFiles(['Morphimon/FirstMorphimon2.png'])
-               .setImage('attachment://Morphimon/FirstMorphimon2.png')
+               .setImage('attachment://FirstMorphimon2.png')
                 .addField('Food Level: ', Math.round(data[userId].FoodLevel) + "%")
                 .addField('Last Feeding Time: ', MinuteDifference(data[userId].lastFeedingTime) + ' Minutes ago\n' + data[userId].lastFeedingTime)
                 .addField('Last Interaction Time: ', MinuteDifference(data[userId].LastInteractionTime) + ' Minutes ago\n' + data[userId].LastInteractionTime)
