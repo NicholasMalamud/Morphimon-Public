@@ -168,14 +168,27 @@ client.on('message', message => {
         else
         {
             var userId = message.author.id;
-            message.author.send(data[userId].MorphimonName + ' is still alive');
-            
-            message.author.send('The last time you interacted with ' + data[userId].MorphimonName + ' was on ' + data[userId].LastInteractionTime );
-            message.author.send('It has been ' + SecondDifference(data[userId].LastInteractionTime) + ' seconds since you last interacted with your Morphimon'); 
             CurrentFoodLevel(data[userId].LastFoodCheckTime, userId);
-            message.author.send( data[userId].MorphimonName + "'s Food Level is at " + Math.round(data[userId].FoodLevel) + '%!');
-            message.author.send('The last time you fed ' + data[userId].MorphimonName + ' was on ' + data[userId].lastFeedingTime);
-            message.author.send('It has been ' + SecondDifference(data[userId].lastFeedingTime) + ' seconds since you last fed your Morphimon'); 
+            const InfoEmbed = new Discord.RichEmbed()
+                .setColor('#0099ff')
+                .setTitle('Pet Info') 
+                .addField('Name: ', data[userId].MorphimonName )
+                .attachFiles(['Morphimon/FirstMorphimon2.png'])
+               .setImage('attachment://Morphimon/FirstMorphimon2.png')
+                .addField('Food Level: ', Math.round(data[userId].FoodLevel) + "%")
+                .addField('Last Feeding Time: ', MinuteDifference(data[userId].lastFeedingTime) + ' Minutes ago\n' + data[userId].lastFeedingTime)
+                .addField('Last Interaction Time: ', MinuteDifference(data[userId].LastInteractionTime) + ' Minutes ago\n' + data[userId].LastInteractionTime)
+                
+                message.author.send(InfoEmbed);
+           // var userId = message.author.id;
+            //message.author.send(data[userId].MorphimonName + ' is still alive');
+            
+            //message.author.send('The last time you interacted with ' + data[userId].MorphimonName + ' was on ' + data[userId].LastInteractionTime );
+            //message.author.send('It has been ' + SecondDifference(data[userId].LastInteractionTime) + ' seconds since you last interacted with your Morphimon'); 
+            //CurrentFoodLevel(data[userId].LastFoodCheckTime, userId);
+            //message.author.send( data[userId].MorphimonName + "'s Food Level is at " + Math.round(data[userId].FoodLevel) + '%!');
+            //message.author.send('The last time you fed ' + data[userId].MorphimonName + ' was on ' + data[userId].lastFeedingTime);
+            //message.author.send('It has been ' + SecondDifference(data[userId].lastFeedingTime) + ' seconds since you last fed your Morphimon'); 
             
             data[userId].LastInteractionTime = Date();
             fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
@@ -186,7 +199,7 @@ client.on('message', message => {
     if (message.content === '!feed') {
         if (data[userId])
         {
-            if( (data[userId].lastFeedingTime === "Never" ) || (MinuteDifference(data[userId].lastFeedingTime) >= 60) )
+           if( (data[userId].lastFeedingTime === "Never" ) || (MinuteDifference(data[userId].lastFeedingTime) >= 60) )
            {
                 if( data[userId].FoodLevel < 100)
                 {
