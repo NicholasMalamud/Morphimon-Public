@@ -4,12 +4,14 @@ let request = require(`request`);
 var dataread;
 var data;
 
+var totalMorphimon = 0;
+
 var start =  false;
 const dataChannelID = '724167400257224764';
 
 // require the discord.js module
 const Discord = require('discord.js');
-
+console.log(Discord.version);
 // create a new Discord client
 const client = new Discord.Client();
 
@@ -25,8 +27,9 @@ function download(url){
     request.get(url)
         .on('error', console.error)
         .pipe(fs.createWriteStream('Morphimon/data.json'))
-      
+
 }
+
 
 
 
@@ -53,15 +56,13 @@ function readData()
 }
 readData();
 })
-.catch(console.error)
-;
+.catch(console.error);
 
 
 
 
 client.on('message', message => {
 
-    
 
     function saveData()
     {
@@ -78,6 +79,9 @@ client.on('message', message => {
         client.channels.get(dataChannelID).send({
             files: ['Morphimon/data.json']
         });
+
+   
+       client.user.setActivity(  totalMorphimon + " Morphimon!"); 
     }
 
     if(start == false)
@@ -94,7 +98,8 @@ client.on('message', message => {
             console.log(error);
         }
 
-       
+        totalMorphimon =  Object.keys(data).length;
+        client.user.setActivity(  totalMorphimon + " Morphimon!"); 
        
     }
 
@@ -110,8 +115,35 @@ client.on('message', message => {
 
     if (message.content === '!read') {
    
-       readData();
+       //readData();
     }
+
+    if (message.content === '!reset') {
+   
+        if (data[userId]) 
+        {
+            data[userId] = undefined;
+            fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
+            totalMorphimon = totalMorphimon - 1;
+            saveData();
+            message.author.send('Your data has been deleted, type !play to play again');
+        }
+     }
+
+     if (message.content === '!cmds') {
+   
+        message.channel.send('!play (to start game, or view info), !feed (to feed pet), !reset (to delete data and restart), !botinvite (for bot invite url), !credit (for who created it)');
+     }
+
+     if (message.content === '!botinvite') {
+   
+        message.channel.send('https://discord.com/oauth2/authorize?client_id=%20723331814931955802&&scope=bot');
+     }
+
+     if (message.content === '!credit') {
+   
+        message.channel.send('Created by morphmagicX on 6/18/2020, using the Discord.js library, github repository and heroku servers');
+     }
 
     if (message.content === '!play') {
         // send back "Pong." to the channel the message was sent in
@@ -139,6 +171,7 @@ client.on('message', message => {
                                         if (!data[userId]) { //this checks if data for the user has already been created
                                             data[userId] = {MorphimonName: messages2.first().content, StartDate: Date(), LastInteractionTime: Date(), FoodLevel: 50, lastFeedingTime: 'Never', LastFoodCheckTime: Date()}; //if not, create it
                                             fs.writeFileSync('Morphimon/data.json', JSON.stringify(data, null, 2));
+                                            totalMorphimon = totalMorphimon + 1;
                                             saveData();
                                         } 
                                     }
@@ -168,7 +201,17 @@ client.on('message', message => {
         else
         {
             var userId = message.author.id;
+            var status;
             CurrentFoodLevel(data[userId].LastFoodCheckTime, userId);
+            if ( Math.round(data[userId].FoodLevel) < 50)
+            {
+                status = "Hungry";
+            }
+            else
+            {
+                status = "Good";
+            }
+
             const InfoEmbed = new Discord.RichEmbed()
                 .setColor('#0099ff')
                 .setTitle('Pet Info') 
@@ -176,9 +219,9 @@ client.on('message', message => {
                 .attachFiles(['FirstMorphimon2.png'])
                .setImage('attachment://FirstMorphimon2.png')
                 .addField('Food Level: ', Math.round(data[userId].FoodLevel) + "%")
-                .addField('Last Feeding Time: ', MinuteDifference(data[userId].lastFeedingTime) + ' Minutes ago\n' + data[userId].lastFeedingTime)
-                .addField('Last Interaction Time: ', MinuteDifference(data[userId].LastInteractionTime) + ' Minutes ago\n' + data[userId].LastInteractionTime)
-                
+                .addField('Last Feeding Time: ', MinuteDifference(data[userId].lastFeedingTime) + ' Minutes ago')//\n' + data[userId].lastFeedingTime)
+                .addField('Last Interaction Time: ', MinuteDifference(data[userId].LastInteractionTime) + ' Minutes ago')//\n' + data[userId].LastInteractionTime)
+                .addField('Status: ', status)
                 message.author.send(InfoEmbed);
            // var userId = message.author.id;
             //message.author.send(data[userId].MorphimonName + ' is still alive');
