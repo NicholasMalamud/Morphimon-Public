@@ -179,7 +179,7 @@ client.on('message', message => {
                 .addField('Last Feeding Time: ', MinuteDifference(data[userId].lastFeedingTime) + ' Minutes ago\n' + data[userId].lastFeedingTime)
                 .addField('Last Interaction Time: ', MinuteDifference(data[userId].LastInteractionTime) + ' Minutes ago\n' + data[userId].LastInteractionTime)
                 
-                message.author.send(InfoEmbed);
+                message.author.send({InfoEmbe});
            // var userId = message.author.id;
             //message.author.send(data[userId].MorphimonName + ' is still alive');
             
