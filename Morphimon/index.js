@@ -169,7 +169,7 @@ client.on('message', message => {
         {
             var userId = message.author.id;
             CurrentFoodLevel(data[userId].LastFoodCheckTime, userId);
-            const InfoEmbed = new Discord.MessageEmbed()
+            const InfoEmbed = new Discord.RichEmbed()
                 .setColor('#0099ff')
                 .setTitle('Pet Info') 
                 .addField('Name: ', data[userId].MorphimonName )
