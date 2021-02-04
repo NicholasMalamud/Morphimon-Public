@@ -142,7 +142,7 @@ client.on('message', message => {
 
      if (message.content === '!credit') {
    
-        message.channel.send('Created by morphmagicX on 6/18/2020, using the Discord.js library, github repository and heroku servers');
+        message.channel.send('Created by morphmagicX on 6/18/2020, using the Discord.js library, github repository and heroku + repli.it servers');
      }
 
     if (message.content === '!play') {
@@ -298,20 +298,21 @@ function SecondDifference(olddate)
     return SecsDiff;
 }
 
-function MinuteDifference(olddate)
-{
-    const newDate = new Date();
-    const oldDate = new Date(olddate);
-    const YearDiff =  newDate.getFullYear() - oldDate.getFullYear();
-    const MonthDiff =  (12 * YearDiff) + (newDate.getMonth() - oldDate.getMonth());
-    const WeekDiff =  (4 * MonthDiff) + (newDate.getWeek() - oldDate.getWeek());
-    const DayDiff =  (7 * WeekDiff) + (newDate.getDay() - oldDate.getDay());
-    const HourDiff = (24 * DayDiff) + (newDate.getHours() - oldDate.getHours()); 
-    const MinsDiff =  (60 * HourDiff) + (newDate.getMinutes() - oldDate.getMinutes());
- 
 
-    return MinsDiff;
+function secondsDiff(d1, d2) {
+   let millisecondDiff = d2 - d1;
+   let secDiff = Math.floor( ( d2 - d1) / 1000 );
+   return secDiff;
 }
+
+function MinuteDifference(Olddate) {
+    d2 = new Date()
+    d1 = new Date(Olddate)
+     let seconds = secondsDiff(d1, d2);
+     let minutesDiff = Math.floor( seconds / 60 );
+     return minutesDiff;
+}
+
 
 function CurrentFoodLevel(Olddate, userId)
 {

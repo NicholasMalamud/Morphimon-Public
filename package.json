@@ -1,26 +1,13 @@
 {
-
   "name": "Morphimon",
-
   "description": "A discord bot that acts like a virtual pet simulator",
-
   "version": "1.0.0",
-
   "main": "Morphimon/index.js",
-
   "scripts": {
-
     "start": "node Morphimon/index.js"
-
-
   },
-
   "dependencies": {
-
     "discord.js": "11.6.4",
-
     "request": "2.81.0"
-
   }
-
 }
