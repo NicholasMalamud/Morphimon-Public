@@ -22,7 +22,7 @@ client.once('ready', () => {
 });
 
 // login to Discord with your app's token
-client.login('NzIzMzMxODE0OTMxOTU1ODAy.XuwXTw.JvuDAqj6ft5uNcxw8B0tYXXE9Fo').then(login => {
+client.login('NzIzMzMxODE0OTMxOTU1ODAy.GUMVs2.B1kgc6PvcLAMWN8U_XVzK-lgt7mofVuP_kp85g').then(login => {
 function download(url){
     request.get(url)
         .on('error', console.error)
