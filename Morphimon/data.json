@@ -1,26 +1,2 @@
 {
-  "345093737669591040": {
-    "MorphimonName": "‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘‘",
-    "StartDate": "Wed Jun 24 2020 00:46:20 GMT+0000 (Coordinated Universal Time)",
-    "LastInteractionTime": "Wed Jun 24 2020 00:47:33 GMT+0000 (Coordinated Universal Time)",
-    "FoodLevel": 49.93055555555556,
-    "lastFeedingTime": "Never",
-    "LastFoodCheckTime": "Wed Jun 24 2020 00:47:33 GMT+0000 (Coordinated Universal Time)"
-  },
-  "397320917413396481": {
-    "MorphimonName": "morph",
-    "StartDate": "Tue Jun 14 2022 23:02:33 GMT+0000 (Coordinated Universal Time)",
-    "LastInteractionTime": "Tue Jun 14 2022 23:32:32 GMT+0000 (Coordinated Universal Time)",
-    "FoodLevel": 77.98611111111111,
-    "lastFeedingTime": "Tue Jun 14 2022 23:02:42 GMT+0000 (Coordinated Universal Time)",
-    "LastFoodCheckTime": "Tue Jun 14 2022 23:32:32 GMT+0000 (Coordinated Universal Time)"
-  },
-  "391113311824904193": {
-    "MorphimonName": "Bubble",
-    "StartDate": "Fri Mar 12 2021 08:06:55 GMT+0000 (Coordinated Universal Time)",
-    "LastInteractionTime": "Fri Apr 02 2021 00:56:31 GMT+0000 (Coordinated Universal Time)",
-    "FoodLevel": 30,
-    "lastFeedingTime": "Fri Apr 02 2021 00:56:16 GMT+0000 (Coordinated Universal Time)",
-    "LastFoodCheckTime": "Fri Apr 02 2021 00:56:31 GMT+0000 (Coordinated Universal Time)"
-  }
 }
