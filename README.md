@@ -8,4 +8,4 @@ Bot Invite: https://discord.com/oauth2/authorize?client_id=%20723331814931955802
     
 Hosted on Heroku or Replit
 
-saves to and retrieves JSON data file from Discord Server ( so basically it has unlimited free datastorage :) )
+saves to and retrieves JSON data file from Discord Server 
